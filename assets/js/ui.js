@@ -71,7 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.classList.add('active');
     mobileMenuBtn.setAttribute('aria-expanded', 'true');
     mobileMenuBtn.classList.add('is-open');
-    body.style.overflow = 'hidden';
+    document.body.classList.add('menu-open');
+    document.documentElement.classList.add('menu-open');
   }
 
   function closeMenu() {
@@ -79,7 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.classList.remove('active');
     mobileMenuBtn.setAttribute('aria-expanded', 'false');
     mobileMenuBtn.classList.remove('is-open');
-    body.style.overflow = '';
+    document.body.classList.remove('menu-open');
+    document.documentElement.classList.remove('menu-open');
   }
 
   if (mobileMenuBtn && navMenu) {

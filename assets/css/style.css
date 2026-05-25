@@ -83,6 +83,7 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -93,6 +94,8 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* ── Global smooth transitions (non-layout properties only) ── */
@@ -460,7 +463,8 @@ a, button, input, textarea, select {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 900px;
+  width: 100%;
+  max-width: 900px;
   height: 500px;
   background: radial-gradient(ellipse at 50% 0%, rgba(155,28,49,0.18) 0%, transparent 70%);
   pointer-events: none;
@@ -511,7 +515,7 @@ a, button, input, textarea, select {
 }
 
 .hero h1 {
-  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-size: clamp(1.8rem, 6vw, 3.8rem);
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -0.03em;
@@ -575,7 +579,7 @@ a, button, input, textarea, select {
     transform var(--transition-fast),
     box-shadow var(--transition-fast),
     background var(--transition-fast);
-  min-width: 200px;
+  max-width: 100%;
 }
 
 /* Shine sweep */
@@ -994,7 +998,7 @@ a, button, input, textarea, select {
    ============================================================ */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
   gap: 1.5rem;
   margin-top: 2rem;
 }
@@ -1531,6 +1535,24 @@ textarea::placeholder {
    RESPONSIVE — Mobile First
    ============================================================ */
 
+/* ── Menu Open State ── */
+body.menu-open,
+html.menu-open {
+  overflow: hidden !important;
+  height: 100%;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+body.menu-open .navbar {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: none !important;
+  filter: none !important;
+  perspective: none !important;
+  z-index: 9999 !important;
+}
+
 /* ── Desktop ≥ 1025px: hamburger + drawer completely hidden ── */
 @media (min-width: 1025px) {
   .mobile-menu-btn {
@@ -1572,6 +1594,8 @@ textarea::placeholder {
 @media (max-width: 1024px) {
   .mobile-menu-btn {
     display: flex;
+    position: relative;
+    z-index: 10000;
   }
 
   /* ── Full-screen dim overlay (sits behind drawer, covers page) ── */
@@ -1581,7 +1605,8 @@ textarea::placeholder {
     background: rgba(0, 0, 0, 0.55);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    z-index: 197;
+    z-index: 9998;
+    overscroll-behavior: none;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -1599,26 +1624,27 @@ textarea::placeholder {
       visibility 0s linear 0s;
   }
 
-  /* ── Side-panel drawer (left edge, 78vw / 340px max) ── */
+  /* ── Side-panel drawer (TRUE FIXED LAYER) ── */
   .nav-menu {
     position: fixed;
     top: 0;
     left: 0;
-    width: 78vw;
-    max-width: 340px;
-    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    width: min(85vw, 320px);
     /* Dark glass — fully opaque, page never shows through */
     background: rgba(10, 10, 14, 0.97);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-right: 1px solid rgba(255, 50, 90, 0.14);
     box-shadow: 4px 0 40px rgba(0, 0, 0, 0.55), 2px 0 0 rgba(255, 50, 90, 0.06);
-    z-index: 198;
-    overflow-y: auto;
-    overflow-x: hidden;
+    z-index: 9999;
+    overflow: hidden;
+    overscroll-behavior: none;
     /* Flex column layout: header / links / actions */
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: stretch;
     gap: 0;
     padding: 0;
@@ -1713,6 +1739,10 @@ textarea::placeholder {
     padding: 1rem 0.75rem 0.5rem;
     list-style: none;
     flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 
   .nav-links li {

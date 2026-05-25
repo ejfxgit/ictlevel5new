@@ -118,6 +118,29 @@
                 <div class="loading-indicator">Loading notes...</div>
             </div>
         </section>
+
+        <!-- Lesson Preview Modal -->
+        <div id="lessonPreviewModal" class="lesson-modal-overlay hidden">
+            <div class="lesson-modal-container">
+                <div class="lesson-modal-header">
+                    <h3 class="lesson-modal-title" id="lessonModalTitle">Preview</h3>
+                    <div class="lesson-modal-actions">
+                        <a id="lessonModalNewTabBtn" href="#" target="_blank" class="lesson-modal-btn">↗ Open in new tab</a>
+                        <button id="lessonModalCloseBtn" class="lesson-modal-btn close-btn" aria-label="Close">✕</button>
+                    </div>
+                </div>
+                <div class="lesson-modal-body">
+                    <div id="lessonModalLoader" class="lesson-modal-loader">
+                        <div class="spinner"></div>
+                    </div>
+                    <iframe id="lessonModalIframe" class="lesson-modal-iframe" allowfullscreen></iframe>
+                    <div id="lessonModalError" class="lesson-modal-error hidden">
+                        <p>Preview unavailable</p>
+                        <a id="lessonModalErrorNewTabBtn" href="#" target="_blank" class="btn btn-outline">Open in new tab</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Footer (same as index) -->

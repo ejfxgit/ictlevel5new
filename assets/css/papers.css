@@ -27,7 +27,8 @@
   top: -80px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(1000px, 130vw);
+  width: 100%;
+  max-width: 1000px;
   height: 500px;
   background:
     radial-gradient(ellipse at 30% 50%, rgba(155,28,49,0.12) 0%, transparent 55%),
@@ -1038,8 +1039,8 @@
 }
 .pmodal-close svg { width: 14px; height: 14px; }
 .pmodal-close:hover { background: rgba(155,28,49,0.15); color: var(--text-color); }
-.pmodal-body { flex: 1; overflow: hidden; }
-.pmodal-iframe { width: 100%; height: 100%; border: none; background: #fff; }
+.pmodal-body { flex: 1; overflow: hidden; -webkit-overflow-scrolling: touch; }
+.pmodal-iframe { width: 100%; height: 100%; border: none; background: #fff; display: block; }
 
 /* ============================================================
    MOBILE

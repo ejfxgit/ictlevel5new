@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
           <!-- Row 4: Buttons -->
           <div class="note-footer">
-            <a href="${escapeHtml(note.file_url)}" target="_blank" rel="noopener noreferrer" class="preview-btn">👁️ Preview</a>
+            <button data-url="${escapeHtml(note.file_url)}" data-title="${escapeHtml(note.title)}" class="preview-btn lesson-preview-btn">👁️ Preview</button>
             <a href="javascript:void(0)" data-url="${escapeHtml(note.file_url)}" data-filename="${escapeHtml(note.title)}.pdf" class="download-btn">📥 Download</a>
           </div>
         </div>
@@ -174,6 +174,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault();
             downloadPDF(btn.dataset.url, btn.dataset.filename);
         }
+        
+        const previewBtn = e.target.closest('.lesson-preview-btn');
+        if (previewBtn) {
+            e.preventDefault();
+            openPreviewModal(previewBtn.dataset.url, previewBtn.dataset.title);
+        }
     });
 
     filterPills.forEach(pill => {
@@ -201,4 +207,74 @@ document.addEventListener('DOMContentLoaded', async () => {
             matchingPill.click();
         }
     }
+
+    // --- Modal Logic ---
+    const previewModal = document.getElementById('lessonPreviewModal');
+    const modalIframe = document.getElementById('lessonModalIframe');
+    const modalTitle = document.getElementById('lessonModalTitle');
+    const modalNewTabBtn = document.getElementById('lessonModalNewTabBtn');
+    const modalErrorNewTabBtn = document.getElementById('lessonModalErrorNewTabBtn');
+    const modalCloseBtn = document.getElementById('lessonModalCloseBtn');
+    const modalLoader = document.getElementById('lessonModalLoader');
+    const modalError = document.getElementById('lessonModalError');
+
+    function openPreviewModal(url, title) {
+        if (!previewModal) return;
+        
+        modalTitle.textContent = title;
+        modalNewTabBtn.href = url;
+        modalErrorNewTabBtn.href = url;
+        
+        modalIframe.src = 'about:blank';
+        modalLoader.style.display = 'flex';
+        modalError.classList.add('hidden');
+        modalIframe.classList.add('hidden');
+        
+        let iframeUrl = url;
+        const isPdf = url.toLowerCase().endsWith('.pdf');
+        
+        if (isPdf) {
+            iframeUrl = `${url}#toolbar=0&navpanes=0&scrollbar=0`;
+        }
+        
+        modalIframe.onload = () => {
+            modalLoader.style.display = 'none';
+            modalIframe.classList.remove('hidden');
+        };
+        
+        modalIframe.onerror = () => {
+            modalLoader.style.display = 'none';
+            modalError.classList.remove('hidden');
+        };
+        
+        modalIframe.src = iframeUrl;
+        
+        previewModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closePreviewModal() {
+        if (!previewModal) return;
+        previewModal.classList.add('hidden');
+        document.body.style.overflow = '';
+        modalIframe.src = 'about:blank';
+    }
+
+    if (modalCloseBtn) {
+        modalCloseBtn.addEventListener('click', closePreviewModal);
+    }
+    
+    if (previewModal) {
+        previewModal.addEventListener('click', (e) => {
+            if (e.target === previewModal || e.target.classList.contains('lesson-modal-container')) {
+                closePreviewModal();
+            }
+        });
+    }
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && previewModal && !previewModal.classList.contains('hidden')) {
+            closePreviewModal();
+        }
+    });
 });

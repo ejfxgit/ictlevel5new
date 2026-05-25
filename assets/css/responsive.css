@@ -1,32 +1,142 @@
 /* ============================================================
-   VTA ICT L5 Community — Responsive Enhancements
-   Additional mobile/tablet breakpoints layered on top of
-   the base responsive logic already in style.css
+   VTA ICT L5 Community — Complete Responsive System
+   Ensures perfect rendering across all modern viewports
+   from 320px up to 1440px+. Global overflow prevention.
    ============================================================ */
 
-/* ── Tablet: 769px–1024px ── */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .hero h1 {
-    font-size: 2.8rem;
-  }
+/* ── Global Responsive Resets ── */
+img, picture, video, canvas, svg, iframe, embed, object {
+  max-width: 100%;
+  height: auto;
+}
 
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+iframe {
+  border: 0;
+}
 
-  .notes-grid {
-    grid-template-columns: repeat(2, 1fr);
+/* ── Desktop Large: ≥ 1440px ── */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1280px;
   }
 }
 
-/* ── Small mobile: ≤ 375px ── */
+/* ── Tablet / Small Laptop: 769px – 1024px ── */
+@media (max-width: 1024px) {
+  .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3rem);
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .notes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .papers-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .papers-search-row {
+    max-width: 80%;
+  }
+
+  /* Limit Drawer width */
+  .nav-menu {
+    width: 320px;
+    max-width: 85vw;
+  }
+}
+
+/* ── Tablet / Large Phone: ≤ 768px ── */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+  
+  .section {
+    padding: 60px 0;
+  }
+
+  .hero {
+    padding: 80px 0 60px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 6vw, 2.8rem);
+  }
+  
+  /* Single column grids on narrow tablets/phones */
+  .grid, .notes-grid, .papers-card-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Search & Filter wraps if necessary */
+  .papers-search-row {
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .papers-search-wrap {
+    flex: 1 1 100%;
+    min-width: 200px;
+  }
+
+  .papers-filter-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  /* Modal scaling for tablet */
+  .pmodal {
+    width: 90vw;
+    height: 80vh;
+  }
+}
+
+/* ── Standard Mobile: ≤ 425px ── */
+@media (max-width: 425px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .hero {
+    padding: 60px 0 40px;
+  }
+
+  .hero p {
+    font-size: 0.95rem;
+  }
+
+  .hero-cta-main {
+    width: 100%;
+  }
+
+  .quick-access-cards {
+    gap: 0.75rem;
+  }
+
+  .qa-card {
+    width: calc(50% - 0.5rem); /* two per row safely */
+    height: 100px;
+  }
+
+  /* Make footer stack better */
+  .footer {
+    padding: 2rem 0;
+  }
+}
+
+/* ── Small Mobile: ≤ 375px ── */
 @media (max-width: 375px) {
   .hero h1 {
-    font-size: 1.8rem;
+    font-size: clamp(1.7rem, 7vw, 2rem);
   }
 
   .lesson-hero h1 {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
   }
 
   .nav-buttons {
@@ -34,12 +144,52 @@
     gap: 0.5rem;
   }
 
+  .nav-buttons .btn, .nav-buttons .btn-outline {
+    width: 100%;
+  }
+
   /* Full-width Get Started on small screens */
   .hero-cta-main {
-    width: 100%;
-    max-width: 320px;
-    padding: 0.85rem 1.5rem;
-    font-size: 0.95rem;
+    padding: 0.85rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  .papers-type-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .papers-type-tab {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .psb-item {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+
+/* ── Very Small Mobile: ≤ 320px ── */
+@media (max-width: 320px) {
+  .container {
+    padding: 0 12px;
+  }
+  
+  .hero h1 {
+    font-size: 1.5rem;
+  }
+
+  .qa-card {
+    width: 100%; /* one per row */
+    height: 80px;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding-left: 20px;
+  }
+  
+  .qa-icon-wrap {
+    width: 36px;
+    height: 36px;
   }
 }
 
@@ -53,6 +203,12 @@
 
   .chat-input-area {
     padding-bottom: env(safe-area-inset-bottom, 1.2rem);
+  }
+  
+  /* Ensure modal is safe from top notch / bottom bar on iOS */
+  .pmodal {
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top);
   }
 }
 
