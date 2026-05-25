@@ -1,0 +1,79 @@
+/* ============================================================
+   VTA ICT L5 Community — Responsive Enhancements
+   Additional mobile/tablet breakpoints layered on top of
+   the base responsive logic already in style.css
+   ============================================================ */
+
+/* ── Tablet: 769px–1024px ── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero h1 {
+    font-size: 2.8rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .notes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Small mobile: ≤ 375px ── */
+@media (max-width: 375px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .lesson-hero h1 {
+    font-size: 1.75rem;
+  }
+
+  .nav-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  /* Full-width Get Started on small screens */
+  .hero-cta-main {
+    width: 100%;
+    max-width: 320px;
+    padding: 0.85rem 1.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+
+/* ── Safe area insets (iPhone notch/home bar) ── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .floating-ai-widget,
+  .floating-create-btn {
+    bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  }
+
+  .chat-input-area {
+    padding-bottom: env(safe-area-inset-bottom, 1.2rem);
+  }
+}
+
+/* ── Print styles ── */
+@media print {
+  .navbar,
+  .floating-ai-widget,
+  .floating-create-btn,
+  .mobile-menu-btn,
+  body::before,
+  body::after {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .card, .note-card, .post-card {
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+}
