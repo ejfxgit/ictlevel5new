@@ -712,11 +712,16 @@
   }
   
   .lesson-modal-body {
-    height: calc(100dvh - 72px);
+    flex: 1;
+    height: auto;
+    min-height: 0;
+    width: 100%;
   }
 
   .lesson-modal-iframe {
-    min-height: 100%;
+    width: 100%;
+    height: 100%;
+    border: none;
   }
   
   .lesson-modal-btn {
@@ -724,3 +729,34 @@
     font-size: 0.8rem;
   }
 }
+
+/* ============================================================
+   LIGHT THEME OVERRIDES (VISIBILITY FIX)
+   ============================================================ */
+.light-theme .lesson-hero h1 {
+  background: linear-gradient(135deg, #111827 30%, #374151 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.light-theme .hero-subtitle { color: #374151; font-weight: 500; }
+.light-theme .search-input { color: #111827; }
+.light-theme .search-input::placeholder { color: #6B7280; }
+.light-theme .search-icon { opacity: 0.6; color: #111827; }
+
+.light-theme .contributors-title { color: #111827; font-weight: 700; }
+.light-theme .name { color: #111827; font-weight: 600; }
+.light-theme .count { color: #9B1C31; background: rgba(155,28,49,0.1); border-color: rgba(155,28,49,0.2); }
+
+.light-theme .pill { color: #374151; font-weight: 600; }
+.light-theme .pill.active { color: #ffffff; }
+
+.light-theme .note-title { color: #111827; font-weight: 700; }
+.light-theme .note-meta { color: #6B7280; }
+.light-theme .note-subject { color: #9B1C31; border-color: rgba(155,28,49,0.3); background: rgba(155,28,49,0.05); }
+.light-theme .empty-state { color: #374151; border-color: rgba(155,28,49,0.2); }
+.light-theme .loading-indicator { color: #6B7280; }
+.light-theme .preview-btn { color: #374151; border-color: rgba(0,0,0,0.15); background: rgba(0,0,0,0.03); }
+.light-theme .preview-btn:hover { color: #111827; background: rgba(0,0,0,0.08); }
+.light-theme .download-btn { color: #9B1C31; }
+.light-theme .download-btn:hover { color: #b22b40; background: rgba(155,28,49,0.15); }

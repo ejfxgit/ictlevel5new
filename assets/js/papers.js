@@ -804,7 +804,50 @@ document.addEventListener('DOMContentLoaded', () => {
   ══════════════════════════════════════════════════ */
   function openModal(url, title) {
     modalTitle.textContent = title || 'Preview';
-    modalFrame.src = url;
+    
+    let iframeUrl = url;
+    const isPdf = url.toLowerCase().endsWith('.pdf');
+    if (isPdf) {
+      iframeUrl = `${url}#toolbar=0&navpanes=0&scrollbar=0`;
+    }
+
+    let fallbackAttempted = false;
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    let loadTimeout;
+
+    const fallbackToGoogle = () => {
+        if (fallbackAttempted || !isPdf) return;
+        fallbackAttempted = true;
+        modalFrame.src = `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(url)}`;
+    };
+
+    modalFrame.onload = () => {
+        clearTimeout(loadTimeout);
+        if (isMobile && isPdf && !fallbackAttempted) {
+            try {
+                const doc = modalFrame.contentDocument || modalFrame.contentWindow.document;
+                if (doc && (!doc.body || doc.body.children.length === 0 || doc.body.innerHTML.trim() === '')) {
+                    fallbackToGoogle();
+                    return;
+                }
+            } catch (e) {}
+        }
+    };
+    
+    modalFrame.onerror = () => {
+        clearTimeout(loadTimeout);
+        if (isPdf && !fallbackAttempted) {
+            fallbackToGoogle();
+        }
+    };
+    
+    if (isPdf && !fallbackAttempted) {
+        loadTimeout = setTimeout(() => {
+            if (!fallbackAttempted) fallbackToGoogle();
+        }, 8000);
+    }
+
+    modalFrame.src = iframeUrl;
     modalBackdrop.style.display = 'flex';
     document.body.style.overflow = 'hidden';
   }

@@ -92,8 +92,11 @@
   left: 1.1rem;
   top: 50%;
   transform: translateY(-50%);
-  width: 17px;
-  height: 17px;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  flex-shrink: 0;
   color: var(--text-muted);
   pointer-events: none;
   transition: color var(--transition-fast);
@@ -101,7 +104,7 @@
 
 .papers-search-input {
   width: 100%;
-  padding: 0.82rem 2.6rem 0.82rem 3rem;
+  padding: 0.82rem 2.6rem 0.82rem 3.2rem;
   font-size: 0.93rem;
   font-family: inherit;
   background: rgba(10,13,20,0.82);
@@ -165,7 +168,13 @@
   flex-shrink: 0;
   transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
 }
-.papers-filter-btn svg { width: 15px; height: 15px; }
+.papers-filter-btn svg {
+  width: 15px;
+  height: 15px;
+  min-width: 15px;
+  min-height: 15px;
+  flex-shrink: 0;
+}
 .papers-filter-btn:hover,
 .papers-filter-btn.active {
   border-color: rgba(155,28,49,0.45);

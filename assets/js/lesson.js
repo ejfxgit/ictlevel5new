@@ -237,15 +237,52 @@ document.addEventListener('DOMContentLoaded', async () => {
             iframeUrl = `${url}#toolbar=0&navpanes=0&scrollbar=0`;
         }
         
+        let fallbackAttempted = false;
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        let loadTimeout;
+        
+        const fallbackToGoogle = () => {
+            if (fallbackAttempted || !isPdf) return;
+            fallbackAttempted = true;
+            modalLoader.style.display = 'flex';
+            modalIframe.classList.add('hidden');
+            modalIframe.src = `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(url)}`;
+        };
+
         modalIframe.onload = () => {
+            clearTimeout(loadTimeout);
+            
+            if (isMobile && isPdf && !fallbackAttempted) {
+                try {
+                    const doc = modalIframe.contentDocument || modalIframe.contentWindow.document;
+                    if (doc && (!doc.body || doc.body.children.length === 0 || doc.body.innerHTML.trim() === '')) {
+                        fallbackToGoogle();
+                        return;
+                    }
+                } catch (e) {
+                    // SecurityError means it loaded cross-origin (could be ok, but we wait for timeout if it's blank).
+                }
+            }
+
             modalLoader.style.display = 'none';
             modalIframe.classList.remove('hidden');
         };
         
         modalIframe.onerror = () => {
-            modalLoader.style.display = 'none';
-            modalError.classList.remove('hidden');
+            clearTimeout(loadTimeout);
+            if (isPdf && !fallbackAttempted) {
+                fallbackToGoogle();
+            } else {
+                modalLoader.style.display = 'none';
+                modalError.classList.remove('hidden');
+            }
         };
+        
+        if (isPdf && !fallbackAttempted) {
+            loadTimeout = setTimeout(() => {
+                if (!fallbackAttempted) fallbackToGoogle();
+            }, 8000);
+        }
         
         modalIframe.src = iframeUrl;
         
