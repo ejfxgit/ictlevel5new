@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const text = document.createElement('span');
     text.className = 'loading-text';
-    text.textContent = 'Thinking...';
+    text.textContent = 'Thinking';
 
     const dots = document.createElement('span');
     dots.className = 'dots';
