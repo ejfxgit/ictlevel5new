@@ -112,6 +112,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function addLoadingMessage() {
+    // Guard against duplicated loaders if handleSend is triggered rapidly
+    const existingLoader = chatMessages.querySelector('.message.loading');
+    if (existingLoader?.id) return existingLoader.id;
+
     const messageDiv = document.createElement('div');
     messageDiv.className = 'message ai loading';
     messageDiv.id = 'loading-' + Date.now();
@@ -119,9 +123,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const bubble = document.createElement('div');
     bubble.className = 'bubble';
 
-    // Animated dots
-    bubble.innerHTML = 'Thinking<span class="dots"><span>.</span><span>.</span><span>.</span></span>';
+    const text = document.createElement('span');
+    text.className = 'loading-text';
+    text.textContent = 'Thinking...';
 
+    const dots = document.createElement('span');
+    dots.className = 'dots';
+    dots.setAttribute('aria-hidden', 'true');
+
+    for (let i = 0; i < 3; i += 1) {
+      const dot = document.createElement('span');
+      dots.appendChild(dot);
+    }
+
+    bubble.append(text, dots);
     messageDiv.appendChild(bubble);
     chatMessages.appendChild(messageDiv);
     scrollToBottom();
